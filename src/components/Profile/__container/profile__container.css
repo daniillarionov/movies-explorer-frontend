@@ -1,0 +1,18 @@
+.profile__container {
+    display: flex;
+    width: 410px;
+    height: 46px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #424242;;
+}
+
+.profile__container:last-child {
+    border: none;
+}
+
+@media screen and (max-width: 540px) {
+    .profile__container {
+        width: 260px;
+    }
+  }

@@ -1,0 +1,17 @@
+.about-project__scheme {
+    display: flex;
+    flex-direction: row;
+    margin-top: 110px;
+}
+
+@media screen and (max-width: 1279px) {
+    .about-project__scheme {
+        margin-top: 93px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .about-project__scheme {
+        margin-top: 60px;
+    }
+  }

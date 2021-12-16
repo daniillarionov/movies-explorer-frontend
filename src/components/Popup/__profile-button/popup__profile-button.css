@@ -1,0 +1,13 @@
+.popup__profile-button {
+    width: 100px;
+    font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+color: #FFFFFF;
+background-color: #202020;
+border: none;
+margin-bottom: 99px;
+background-image: url("../../../images/profile.svg");
+background-position: right;
+background-repeat: no-repeat;
+}

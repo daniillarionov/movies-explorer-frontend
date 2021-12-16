@@ -1,0 +1,11 @@
+.search-form__checkbox {
+    position: relative;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.search-form__checkbox:checked + .search-form__pseudo-item {
+    background-image: url("../../../images/on.svg");
+}

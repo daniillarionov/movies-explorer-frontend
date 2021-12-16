@@ -1,0 +1,12 @@
+.page-with-login__form-section {
+    display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 380px;
+}
+
+@media screen and (max-width: 767px) {
+  .page-with-login__form-section {
+    height: 468px;
+  }
+}

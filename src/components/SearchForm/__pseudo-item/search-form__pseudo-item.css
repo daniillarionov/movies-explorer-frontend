@@ -1,0 +1,10 @@
+.search-form__pseudo-item {
+    position: absolute;
+    top: 16px;
+    right: 0;
+    z-index: 1;
+    width: 36px;
+    height: 20px;
+    background-image: url("../../../images/off.svg");
+    background-repeat: no-repeat;
+}
