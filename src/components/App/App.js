@@ -9,11 +9,13 @@ import Footer from "../Footer/Footer";
 import Popup from "../Popup/Popup";
 import { Switch, Route } from "react-router-dom";
 import { useState } from "react";
+import React from "react";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setisPopupOpen] = useState(false);
   const [isLiked, setisLiked] = useState(false);
+  
   function handleLogin() {
     setLoggedIn(true);
   }
@@ -32,7 +34,7 @@ function App() {
         <Switch>
           <Route exact path="/">
           <Header loggedIn={loggedIn} onClick={handlePopupClick} />
-            <Main />
+            <Main/>
             <Footer />
           </Route>
           <Route path="/movies">

@@ -4,7 +4,7 @@ function SearchForm() {
       <div className="search-form">
           <div className="search-form__comtainer">
               <form className="search-form__section">
-                  <input className="search-form__input" placeholder="Фильм"/>
+                  <input className="search-form__input" placeholder="Фильм" required/>
               </form>
               <button className="search-form__button"></button>
           </div>
