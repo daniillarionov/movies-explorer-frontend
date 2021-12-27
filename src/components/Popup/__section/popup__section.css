@@ -1,0 +1,11 @@
+.popup__section {    
+    background: #202020;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 520px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+}

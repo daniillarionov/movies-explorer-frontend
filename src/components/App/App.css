@@ -1,12 +1,12 @@
 .app {
-    min-height: 100vmin;
-    font-family: "Inter", "Arial", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    color: #FFFFFF;
-    width: 100%;
-    padding: 0;
-    background-color: #202020;
-    background-size: cover;
-    box-sizing: border-box;  
-    width: 100%;
-  }
+  min-height: 100vmin;
+  font-family: "Inter", "Arial", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  width: 100%;
+  padding: 0;
+  background-color: #202020;
+  background-size: cover;
+  box-sizing: border-box;
+  width: 100%;
+}

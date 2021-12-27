@@ -1,79 +1,72 @@
 import React from "react";
 import Logo from "../Logo/Logo";
 
-function Header({ loggedIn, onClick }) {
+function Header({
+  loggedIn,
+  onClick,
+  handleMoviesClick,
+  handleLogoClick,
+  handleSavedMoviesClick,
+  handleAccountClick,
+  handleSignupClick,
+  handleSigninClick,
+}) {
   return (
-    <header className="header">   
-     
+    <header className="header">
       {loggedIn ? (
-        <>        
-        <Logo />  
-        <div className="header__container">
-          <form
-            className="header__form"
-            action="https://srcmovies.nomoredomains.rocks/signup"
-            target="_blank"
-          >
-            <button type="submit" className="header__button">
-              Регистрация
-            </button>
-          </form>
-          <form action="https://srcmovies.nomoredomains.rocks/signin" target="_blank">
+        <>
+          <div className="header__container">
+            <Logo handleLogoClick={handleLogoClick} />
             <button
-              type="submit"
-              className="header__button header__button_signin"
+              type="button"
+              className="header__button header__button_movies"
+              onClick={handleMoviesClick}
             >
-              Войти
+              Фильмы
             </button>
-          </form>
-        </div>
+            <button
+              type="button"
+              className="header__button header__button_saved-movies"
+              onClick={handleSavedMoviesClick}
+            >
+              Сохранённые фильмы
+            </button>
+          </div>
+          <div className="header__container">
+            <button
+              type="button"
+              className="header__button header__button_me"
+              onClick={handleAccountClick}
+            >
+              Аккаунт
+            </button>
+            <div className="header__profile"></div>
+          </div>
+          <button
+            type="submit"
+            className="header__button-menu"
+            onClick={onClick}
+          ></button>
         </>
       ) : (
         <>
-         
-        <div className="header__container">
-        <Logo /> 
-            <form
-              className="header__form-movies"
-              action="https://srcmovies.nomoredomains.rocks/movies"
-              target="_blank"
-            >
-              <button
-                type="submit"
-                className="header__button header__button_movies"
-              >
-                Фильмы
-              </button>
-            </form>
-            <form className="header__form-movies" action="https://srcmovies.nomoredomains.rocks/saved-movies" target="_blank">
-              <button
-                type="submit"
-                className="header__button header__button_saved-movies"
-              >
-                Сохранённые фильмы
-              </button>
-            </form>
-          </div>
+          <Logo handleLogoClick={handleLogoClick} />
           <div className="header__container">
-            <form
-              className="header__form-movies"
-              action="https://srcmovies.nomoredomains.rocks/profile"
-              target="_blank"
+            <button
+              type="button"
+              className="header__button"
+              onClick={handleSignupClick}
             >
-              <button
-                type="submit"
-                className="header__button header__button_me"
-              >
-                Аккаунт
-              </button>              
-            </form>     
-            <div className="header__profile"></div>       
+              Регистрация
+            </button>
+            <button
+              type="button"
+              className="header__button header__button_signin"
+              onClick={handleSigninClick}
+            >
+              Войти
+            </button>
           </div>
-          <button
-                type="submit"
-                className="header__button-menu"
-                onClick={onClick}
-              ></button>  
         </>
       )}
     </header>

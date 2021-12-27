@@ -1,112 +1,56 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList({
   onCardLike,
-  isLiked,
-  likeButton
+  likeButton,
+  filterMovies,
+  savedMoviesPage,
+  onDeleteMovie,
+  loadCardList,
+  addCardLoading,
+  setSourceValue,
 }) {
+  const savedMoviesLocal = JSON.parse(localStorage.getItem("savedmoviesLocal"));
+  const endLoading = filterMovies.length <= loadCardList;
   return (
     <div className="movies-card-list">
       <section className="movies-card-list__section">
+        {filterMovies.slice(0, loadCardList).map((item) => {
+          savedMoviesLocal.map((card) => {
+            if (card.nameRU === item.nameRU) {
+              return (item._id = card._id);
+            }
+          });
+          return (
             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://wallbox.ru/wallpapers/main/201550/c3aad58856f1369.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
+              movie={item}
+              duration={item.duration}
+              endLoading={endLoading}
+              likeButton={likeButton}
+              onCardLike={onCardLike}
+              onDeleteMovie={onDeleteMovie}
+              link={
+                savedMoviesPage
+                  ? item.image
+                  : `https://api.nomoreparties.co${item.image.url}`
+              }
             />
-            <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://yobte.ru/uploads/posts/2019-11/devushki-v-jarkih-platjah-78-foto-6.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-            <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://yobte.ru/uploads/posts/2019-11/devushki-v-sinih-platjah-82-foto-15.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-            <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />
-             <MoviesCard
-            name="33 слова о дизайне"
-            duration="1ч42м"
-            link="https://mykaleidoscope.ru/uploads/posts/2021-03/1615611326_25-p-plate-na-chernom-fone-obraz-27.jpg"
-            onCardLike={onCardLike}
-            isLiked={isLiked}
-            likeButton={likeButton}
-            />           
+          );
+        })}
       </section>
-      <button type="button" className="movies-card-list__button">Ещё</button>
+      <button
+        onClick={addCardLoading}
+        type="button"
+        className={
+          endLoading
+            ? "movies-card-list__button_hidden"
+            : "movies-card-list__button"
+        }
+      >
+        Ещё
+      </button>
     </div>
   );
 }

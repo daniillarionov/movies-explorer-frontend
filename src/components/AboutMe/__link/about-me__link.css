@@ -1,13 +1,13 @@
 .about-me__link {
-    font-weight: 500;
-font-size: 14px;
-line-height: 17px;
-text-decoration: none;
-    transition: opacity 1s ease;
-    color: #FFFFFF;    
-margin-right: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration: none;
+  transition: opacity 1s ease;
+  color: #ffffff;
+  margin-right: 10px;
 }
 
 .portfolio__link:hover {
-    opacity: .8;
-  }
+  opacity: 0.8;
+}

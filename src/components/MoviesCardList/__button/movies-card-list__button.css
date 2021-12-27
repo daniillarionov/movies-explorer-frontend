@@ -9,4 +9,10 @@
     line-height: 15px;
     border-radius: 6px;
     margin: 50px 0 80px;
+    transition: opacity 1s ease;
+    cursor: pointer;
+}
+
+.movies-card-list__button_hidden {
+    display: none;
 }

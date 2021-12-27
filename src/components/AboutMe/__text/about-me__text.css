@@ -1,24 +1,24 @@
 .about-me__text {
-    font-weight: normal;
-font-size: 14px;
-line-height: 22px;
-max-width: 600px;
-margin: 0;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  max-width: 600px;
+  margin: 0;
 }
 
 @media screen and (max-width: 1279px) {
-    .about-me__text {
-        font-size: 12px;
-line-height: 18px;
-max-width: 364px;
-    }
+  .about-me__text {
+    font-size: 12px;
+    line-height: 18px;
+    max-width: 364px;
   }
+}
 
-  @media screen and (max-width: 767px) {
-    .about-me__text {
-        font-size: 11px;
-line-height: 16px;
-margin-bottom: 57px;
-max-width: 740px;
-    }
+@media screen and (max-width: 767px) {
+  .about-me__text {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 57px;
+    max-width: 740px;
   }
+}

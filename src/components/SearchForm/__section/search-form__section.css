@@ -1,3 +1,6 @@
 .search-form__section {
-  width: calc(100% - 94px);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
 }

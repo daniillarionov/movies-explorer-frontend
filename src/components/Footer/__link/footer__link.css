@@ -1,26 +1,24 @@
 .footer__link {
-    font-size: 13px;
-    line-height: 16px;
-    text-decoration: none;
-    color: #FFFFFF;
-    transition: opacity 1s ease;
-    margin-right: 20px;
-  }
-  
-  .footer__link:hover {
-    opacity: .8;
-  }
+  font-size: 13px;
+  line-height: 16px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: opacity 1s ease;
+  margin-right: 20px;
+}
 
-  .footer__link:last-child {
-    margin-right: 0;
-  }
+.footer__link:hover {
+  opacity: 0.8;
+}
 
-  @media screen and (max-width: 767px) {
-    .footer__link {
-      font-size: 12px;
-      line-height: 15px;
-      margin: 0 0 12px;
-    }
-  }
+.footer__link:last-child {
+  margin-right: 0;
+}
 
-  
+@media screen and (max-width: 767px) {
+  .footer__link {
+    font-size: 12px;
+    line-height: 15px;
+    margin: 0 0 12px;
+  }
+}

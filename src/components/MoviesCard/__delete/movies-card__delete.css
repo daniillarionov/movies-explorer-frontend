@@ -14,3 +14,7 @@
   .movies-card__delete:hover {
     opacity: .5;
   }
+
+  .movies-card__delete_hidden {
+    display: none;
+  }

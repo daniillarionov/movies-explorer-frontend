@@ -1,21 +1,21 @@
 .about-project__text {
-    font-size: 14px;
-line-height: 20px;
-max-width: 550px;
-margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 550px;
+  margin: 0;
 }
 
 @media screen and (max-width: 1279px) {
-    .about-project__text {
-        font-size: 12px;
-line-height: 18px;
-    }
+  .about-project__text {
+    font-size: 12px;
+    line-height: 18px;
   }
+}
 
-  @media screen and (max-width: 767px) {
-    .about-project__text {
-        margin-top: 16px;
-        font-size: 11px;
-line-height: 16px;
-    }
+@media screen and (max-width: 767px) {
+  .about-project__text {
+    margin-top: 16px;
+    font-size: 11px;
+    line-height: 16px;
   }
+}

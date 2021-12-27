@@ -1,21 +1,21 @@
 .about-project__subtitle {
-    font-size: 20px;
-line-height: 24px;
-letter-spacing: -0.04em;
-margin: 70px 0 26px;
-font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  margin: 70px 0 26px;
+  font-weight: normal;
 }
 
 @media screen and (max-width: 1279px) {
-    .about-project__subtitle {
-        margin-bottom: 22px;
-    }
+  .about-project__subtitle {
+    margin-bottom: 22px;
   }
+}
 
-  @media screen and (max-width: 767px) {
-    .about-project__subtitle {
-        font-size: 18px;
-line-height: 22px;
-        margin: 0;
-    }
+@media screen and (max-width: 767px) {
+  .about-project__subtitle {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0;
   }
+}

@@ -5,6 +5,10 @@
     height: 38px;
     transition: opacity 1s ease;
     margin-right: 44px;
+    text-decoration: none;
+    border: none;
+    background-color: #202020;
+    cursor: pointer;
   }
   
   .logo:hover {

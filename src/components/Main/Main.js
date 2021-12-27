@@ -8,11 +8,11 @@ import AboutMe from "../AboutMe/AboutMe";
 function Main() {
   return (
     <main className="content">
-      <Promo/>
-      <AboutProject/>
-      <Techs/>
-      <AboutMe/>
-      <Portfolio/>
+      <Promo />
+      <AboutProject />
+      <Techs />
+      <AboutMe />
+      <Portfolio />
     </main>
   );
 }

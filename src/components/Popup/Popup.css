@@ -1,23 +1,17 @@
 .popup {
     position: fixed;
-    background: rgba(0, 0, 0, 0.3);
+    visibility: hidden;
     top: 0;
     bottom: 0;
     right: 0;
-    justify-content: space-between;
-    align-items: center;
-    visibility: hidden;
+    left: 0;
     opacity: 0;
-    display: flex;
-    flex-direction: column;
-    transition: visibility .6s ease-in, opacity .6s;
-    width: 520px;
     z-index: 4;
+    transition: visibility .6s ease-in, opacity .6s;
   }
     
   .popup_opened {
     visibility: visible;
-    background-color: #202020;
     opacity: 1;
   }
 

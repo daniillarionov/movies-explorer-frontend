@@ -1,14 +1,14 @@
 .header__button-menu {
-    width: 44px;
-    height: 44px;
-    background-image: url("../../../images/menu.svg");
-    background-color: #202020;
-    display: none;
-    border: none;
+  width: 44px;
+  height: 44px;
+  background-image: url("../../../images/menu.svg");
+  background-color: #202020;
+  display: none;
+  border: none;
 }
 
 @media screen and (max-width: 1279px) {
-    .header__button-menu {
-      display:flex;
-    }
+  .header__button-menu {
+    display: flex;
   }
+}
