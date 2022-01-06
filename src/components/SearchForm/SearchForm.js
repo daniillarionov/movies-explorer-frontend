@@ -1,29 +1,40 @@
 import { useState } from "react";
 function SearchForm({
-  onSourceMovies,
   sourceValue,
   onSourceValue,
   onCheckboxClick,
   checkboxState,
   filterMovies,
-  setNotFoundText
+  setNotFoundText,
+  handleFilterMovies,
+  movies,
+  setFilterMovies,
+  savedMoviesPage,
 }) {
   const [error, setError] = useState("");
+  const [valueSource, setValueSource] = useState("");
   function handleSubmit(e) {
+    if (!savedMoviesPage) {
+      localStorage.setItem("source", true);
+      localStorage.setItem("sourceValue", valueSource);
+      onSourceValue(valueSource);
+    }
     e.preventDefault();
     if (!sourceValue) {
       setError("Нужно ввести ключевое слово");
     } else {
-      onSourceMovies();
+      handleFilterMovies(movies, checkboxState, sourceValue, setFilterMovies);
       setError("");
     }
-    if (filterMovies.length === 0) {
-      setNotFoundText("Ничего не найдено")
-    }
+  }
+  if (filterMovies === null || filterMovies.length === 0) {
+    const localSource = localStorage.getItem("source");
+    setNotFoundText(localSource === null ? "" : "Ничего не найдено");
   }
 
   function handleChange(e) {
     onSourceValue(e.target.value);
+    setValueSource(e.target.value);
     setError("");
   }
   const checkbox = document.querySelector("#switch");
@@ -34,7 +45,7 @@ function SearchForm({
       onCheckboxClick(false);
     }
   }
-const checkboxChecked = checkboxState ? true : false;
+  const checkboxChecked = checkboxState ? true : false;
   return (
     <div className="search-form">
       <div className="search-form__comtainer">

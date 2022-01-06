@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useEffect } from "react";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Prelosder from "../Preloader/Preloader";
@@ -6,8 +6,6 @@ import NotFoundResult from "../NotFoundResult/NotFoundResult";
 
 function SavedMovies({
   onCardLike,
-  isLiked,
-  onSourceMovies,
   isLoading,
   loadCardList,
   addCardLoading,
@@ -17,28 +15,46 @@ function SavedMovies({
   setCheckboxState,
   checkboxState,
   handleDeleteMovie,
-  setSourceValue,
-  handleLoadSavedMovies,
   setNotFoundText,
-  notFoundText
+  notFoundText,
+  setSavedMovie,
+  handleFilterMovies,
+  setSavedMoviesPage,
+  savedMoviesPage,
 }) {
-  const [savedMoviesPage, setSavedMoviesPage] = useState(false);
   useEffect(() => {
-    setCheckboxState(false);
-    handleLoadSavedMovies();
+    const localSavedMovies = JSON.parse(
+      localStorage.getItem("savedMoviesLocal")
+    );
     setSavedMoviesPage(true);
-    setSourceValue("");
+    setCheckboxState(false);
+    setSavedMovie(localSavedMovies)
   }, []);
+  useEffect(() => {
+    const localSavedMovies = JSON.parse(
+      localStorage.getItem("savedMoviesLocal")
+    );
+    handleFilterMovies(
+      localSavedMovies,
+      checkboxState,
+      sourceValue,
+      setSavedMovie
+    );
+  }, [checkboxState]);
   const notFoundMovies = savedMovies.length === 0;
   return (
     <>
       <SearchForm
-        onSourceMovies={onSourceMovies}
         onSourceValue={handleSouceValueChange}
         sourceValue={sourceValue}
         onCheckboxClick={setCheckboxState}
         checkboxState={checkboxState}
         setNotFoundText={setNotFoundText}
+        handleFilterMovies={handleFilterMovies}
+        movies={savedMovies}
+        setFilterMovies={setSavedMovie}
+        filterMovies={savedMovies}
+        savedMoviesPage={savedMoviesPage}
       />
       {isLoading ? (
         <Prelosder />
@@ -47,17 +63,13 @@ function SavedMovies({
       ) : (
         <MoviesCardList
           onCardLike={onCardLike}
-          isLiked={isLiked}
           likeButton={false}
           filterMovies={savedMovies}
-          sourceValue={sourceValue}
           savedMoviesPage={savedMoviesPage}
-          checkboxState={checkboxState}
           onDeleteMovie={handleDeleteMovie}
-          isLoading={isLoading}
           loadCardList={loadCardList}
-          setSourceValue={setSourceValue}
           addCardLoading={addCardLoading}
+          savedMovies={savedMovies}
         />
       )}
     </>

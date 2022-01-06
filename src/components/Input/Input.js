@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import validator from 'validator'
 function Input({
   title,
   type,
@@ -7,7 +8,7 @@ function Input({
   passClass,
   minLength,
   onChange,
-  setIsValid,
+  setIsValid
 }) {
   const [errors, setErrors] = useState("");
 
@@ -15,6 +16,17 @@ function Input({
     setErrors(e.target.validationMessage);
     onChange(e);
     setIsValid(e.target.closest(".form").checkValidity());
+  }
+  function handleChangeEmail(e) {
+    onChange(e);
+    const email = e.target.value
+    if (!validator.isEmail(email)) {
+      setErrors("Введите корректный адрес электронной почты");
+      setIsValid(false)
+    } else {
+      setErrors("")
+      setIsValid(true)
+    }
   }
 
   return (
@@ -27,7 +39,7 @@ function Input({
         required
         minLength={minLength}
         maxLength={30}
-        onChange={handleChange}
+        onChange={type === "email" ? handleChangeEmail : handleChange}
       />
       <span className="input__input-error">{errors}</span>
     </>

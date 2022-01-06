@@ -17,18 +17,17 @@ import PopupSideMenu from "../PopupSideMenu/PopupSideMenu";
 import PopupMovieDelete from "../PopupMovieDelete/PopupMovieDelete";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import PageNotFound from "../PageNotFound/PageNotFound";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setisPopupOpen] = useState(false);
   const [isPopupErrorOpen, setisPopupErrorOpen] = useState(false);
-  const [movies, setMovies] = useState([]);
   const [filterMovies, setFilterMovies] = useState([]);
   const [savedMovies, setSavedMovie] = useState([]);
   const [loadSavedMovies, setLoadSavedMovie] = useState([]);
   const [error, setError] = useState([]);
-  const [errorSource, setErrorSource] = useState(false);
   const [errorLogin, setErrorLogin] = useState("");
   const [notFoundText, setNotFoundText] = useState("");
   const [email, setEmail] = useState("");
@@ -38,34 +37,16 @@ function App() {
   const [isRenderHeader, setIsRenderHeader] = useState(false);
   const [isRenderFooter, setIsRenderFooter] = useState(false);
   const [sourceValue, setSourceValue] = useState("");
+  const [savedSourceValue, setSavedSourceValue] = useState("");
   const [checkboxState, setCheckboxState] = useState(false);
   const [isOpenTooltip, setIsOpenTooltip] = useState(false);
+  const [savedMoviesPage, setSavedMoviesPage] = useState(false);
   const history = useHistory();
   const [width, setWidth] = useState(document.documentElement.clientWidth);
   let loadCardListStart =
     width < 766 ? 5 : width < 1181 ? 8 : width < 1279 ? 9 : 12;
   const addCardLoad = width < 766 ? 1 : width < 1181 ? 2 : width < 1279 ? 3 : 4;
   const [loadCardList, setLoadCardList] = useState(loadCardListStart);
-
-  useEffect(() => {
-    window.addEventListener("resize", handleWidth, { passive: true });
-    return () => {
-      window.removeEventListener("rezize", handleWidth);
-    };
-  }, []);
-  useEffect(() => {
-    localStorage.setItem("sourceValue", "");
-    handleLoadSavedMovies();
-  }, []);
-
-  useEffect(() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {});
-  }, []);
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
@@ -75,7 +56,7 @@ function App() {
           if (res) {
             setCurrentUser(res);
             setLoggedIn(true);
-            history.push("/movies");
+            localStorage.setItem("loggedIn", true);
           }
         })
         .catch((err) => {
@@ -85,7 +66,44 @@ function App() {
         });
     }
   }, []);
+  useEffect(() => {
+    window.addEventListener("resize", handleWidth, { passive: true });
+    return () => {
+      window.removeEventListener("rezize", handleWidth);
+    };
+  }, []);
+  function loadUserInfo() {
+    api
+      .getUserInfo()
+      .then((res) => {
+        setCurrentUser(res);
+      })
+      .catch((err) => {
+        setisPopupErrorOpen(true);
+        setError(err);
+      });
+  }
   function handleFilterMovies(
+    movies,
+    checkboxState,
+    sourceValue,
+    setMoviesList
+  ) {
+    localStorage.setItem("checkboxState", checkboxState);
+    const Movies = movies.filter((item) => {
+      if (
+        checkboxState
+          ? item.nameRU.toLowerCase().includes(sourceValue.toLowerCase()) &&
+            item.duration <= 40
+          : item.nameRU.toLowerCase().includes(sourceValue.toLowerCase())
+      ) {
+        return item;
+      }
+    });
+    localStorage.setItem("sourceMoviesResult", JSON.stringify(Movies));
+    setMoviesList(Movies);
+  }
+  function handleFilterSavedMovies(
     movies,
     checkboxState,
     sourceValue,
@@ -101,7 +119,6 @@ function App() {
         return item;
       }
     });
-    localStorage.setItem("moviesLocalSource", JSON.stringify(Movies));
     setMoviesList(Movies);
   }
   function addCardLoading() {
@@ -114,18 +131,26 @@ function App() {
   function handleLoadSavedMovies() {
     setIsLoading(true);
     api
-      .getMovies()
-      .then((data) => {
-        const savedMovies = data.filter((item) => {
-          if (item.owner === currentUser._id) {
-            return item;
-          }
-        });
-        localStorage.setItem("savedmoviesLocal", JSON.stringify(savedMovies));
-        localStorage.setItem("savedSurceValue", sourceValue);
-        localStorage.setItem("savedCeckboxState", checkboxState);
-        setSavedMovie(savedMovies);
-        setLoadSavedMovie(savedMovies);
+      .getUserInfo()
+      .then((res) => {
+        api
+          .getMovies()
+          .then((data) => {
+            const savedMovies = data.filter((item) => {
+              if (item.owner === res._id) {
+                return item;
+              }
+            });
+            setSavedMovie(savedMovies);
+            localStorage.setItem(
+              "savedMoviesLocal",
+              JSON.stringify(savedMovies)
+            );
+          })
+          .catch((err) => {
+            setisPopupErrorOpen(true);
+            setError(err);
+          });
       })
       .catch((err) => {
         setisPopupErrorOpen(true);
@@ -143,7 +168,7 @@ function App() {
       setSavedMovie
     );
   }
-  function handleSourceMovies() {
+  function handleLoadMovies() {
     setIsLoading(true);
     moviesApi
       .getMovies()
@@ -151,11 +176,10 @@ function App() {
         localStorage.setItem("moviesLocal", JSON.stringify(data));
         localStorage.setItem("sourceValue", sourceValue);
         localStorage.setItem("checkboxState", checkboxState);
-        setMovies(data);
-        handleFilterMovies(data, checkboxState, sourceValue, setFilterMovies);
       })
       .catch((err) => {
-        setErrorSource(true);
+        setisPopupErrorOpen(true);
+        setError(err);
         setNotFoundText(
           "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
         );
@@ -164,7 +188,6 @@ function App() {
         setIsLoading(false);
       });
   }
-
   function handleUpdateUser({ name, email }) {
     api
       .updateUserInfo(name, email)
@@ -196,10 +219,29 @@ function App() {
   function handleLikeClick(data) {
     api
       .addMovie(data)
-      .then((data) => {
-        savedMovies.push(data);
-        handleFilterMovies(movies, checkboxState, sourceValue, setSavedMovie);
-        localStorage.setItem("savedmoviesLocal", JSON.stringify(savedMovies));
+      .then(() => {
+        api
+          .getMovies()
+          .then((data) => {
+            const savedMovies = data.filter((item) => {
+              if (item.owner === currentUser._id) {
+                return item;
+              }
+            });
+            localStorage.setItem(
+              "savedMoviesLocal",
+              JSON.stringify(savedMovies)
+            );
+            setSavedMovie(savedMovies);
+            setLoadSavedMovie(savedMovies);
+          })
+          .catch((err) => {
+            setisPopupErrorOpen(true);
+            setError(err);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
       })
       .catch((err) => {
         setisPopupErrorOpen(true);
@@ -223,19 +265,18 @@ function App() {
   }
   function handleLogoClick() {
     history.push("/");
+    setIsRenderHeader(false);
   }
-  function handleRegister({ name, email, password }) {
-    apiAuth
+  async function handleRegister({ name, email, password }) {
+    await apiAuth
       .register({ name, email, password })
-      .then((data) => {
-        history.push("/movies").catch((err) => {
-          setisPopupErrorOpen(true);
-          setError(err);
-        });
+      .then(() => {
+        history.push("/movies");
       })
-      .catch((err) => {
+      .catch(() => {
         setErrorLogin("При регистрации произошла ошибка");
       });
+    handleLogin({ email, password });
   }
   function handleLogin({ email, password }) {
     apiAuth
@@ -244,42 +285,53 @@ function App() {
         setLoggedIn(true);
         history.push("/movies");
         localStorage.setItem("jwt", data.token);
+        localStorage.setItem("loggedIn", true);
+        loadUserInfo();
+        handleLoadMovies();
+        handleLoadSavedMovies()
       })
-      .catch((err) => {
+      .catch(() => {
         setErrorLogin("При авторизации произошла ошибка");
       });
   }
+
   function handleButtonQuitClick() {
-    history.push("/signin");
+    history.push("/");
     localStorage.removeItem("jwt");
+    localStorage.removeItem("sourceValue");
+    localStorage.removeItem("checkboxState");
+    localStorage.removeItem("moviesLocal");
+    localStorage.removeItem("sourceMoviesResult");
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("savedMoviesLocal");
+    localStorage.removeItem("source");
+    setSourceValue("")
     setLoggedIn(false);
   }
   function handleSouceValueChange(data) {
     setSourceValue(data);
   }
+  function handleSouceSavedValueChange(data) {
+    setSavedSourceValue(data);
+  }
   function handleDeleteMovie(movieId) {
     setIsOpenDeletePopup(true);
     api
       .deleteMovie(movieId)
-      .then((data) => {
+      .then(() => {
         api
           .getMovies()
           .then((data) => {
-            const savedMovies = data.filter((item) => {
+            const newSavedMovies = data.filter((item) => {
               if (item.owner === currentUser._id) {
                 return item;
               }
             });
             localStorage.setItem(
-              "savedmoviesLocal",
-              JSON.stringify(savedMovies)
+              "savedMoviesLocal",
+              JSON.stringify(newSavedMovies)
             );
-            handleFilterMovies(
-              savedMovies,
-              checkboxState,
-              sourceValue,
-              setSavedMovie
-            );
+            setSavedMovie(newSavedMovies);
           })
           .catch((err) => {
             setisPopupErrorOpen(true);
@@ -292,8 +344,10 @@ function App() {
       .catch((err) => {
         setisPopupErrorOpen(true);
         setError(err);
-      })
-      .finally(() => {});
+      });
+  }
+  function HandleClockToBack() {
+    history.goBack();
   }
   return (
     <div className="app">
@@ -315,52 +369,60 @@ function App() {
           )}
           <Switch>
             <Route exact path="/">
-              <Main />
+              <Main
+                setIsRenderHeader={setIsRenderHeader}
+                setIsRenderFooter={setIsRenderFooter}
+              />
             </Route>
 
             <ProtectedRoute
               path="/movies"
               component={Movies}
-              loggedIn={loggedIn}
               onCardLike={handleLikeClick}
-              onSourceMovies={handleSourceMovies}
+              onSourceMovies={handleLoadMovies}
               filterMovies={filterMovies}
               isLoading={isLoading}
               loadCardList={loadCardList}
               addCardLoading={addCardLoading}
               setIsRenderHeader={setIsRenderHeader}
               setIsRenderFooter={setIsRenderFooter}
-              setMovies={setMovies}
               handleSouceValueChange={handleSouceValueChange}
               sourceValue={sourceValue}
               setCheckboxState={setCheckboxState}
               checkboxState={checkboxState}
-              errorSource={errorSource}
               notFoundText={notFoundText}
               setSourceValue={setSourceValue}
               handleDeleteMovie={handleDeleteMovie}
               handleFilterMovies={handleFilterMovies}
               setNotFoundText={setNotFoundText}
+              setFilterMovies={setFilterMovies}
+              savedMovies={savedMovies}
+              setSavedMovie={setSavedMovie}
+              handleLoadSavedMovies={handleLoadSavedMovies}
+              setSavedMoviesPage={setSavedMoviesPage}
+              savedMoviesPage={savedMoviesPage}
             />
 
             <ProtectedRoute
               path="/saved-movies"
               component={SavedMovies}
-              loggedIn={loggedIn}
               isLoading={isLoading}
               loadCardList={loadCardList}
               addCardLoading={addCardLoading}
               savedMovies={savedMovies}
-              handleSouceValueChange={handleSouceValueChange}
-              sourceValue={sourceValue}
+              handleSouceValueChange={handleSouceSavedValueChange}
+              sourceValue={savedSourceValue}
               setCheckboxState={setCheckboxState}
               checkboxState={checkboxState}
               handleDeleteMovie={handleDeleteMovie}
-              setSourceValue={setSourceValue}
               onSourceMovies={handleSourceSavedMovies}
-              handleLoadSavedMovies={handleLoadSavedMovies}              
-              setNotFoundText={setNotFoundText}              
+              handleLoadSavedMovies={handleLoadSavedMovies}
+              setNotFoundText={setNotFoundText}
               notFoundText={notFoundText}
+              setSavedMovie={setSavedMovie}
+              handleFilterMovies={handleFilterSavedMovies}
+              setSavedMoviesPage={setSavedMoviesPage}
+              savedMoviesPage={savedMoviesPage}
             />
 
             <ProtectedRoute
@@ -398,6 +460,13 @@ function App() {
                 setIsRenderFooter={setIsRenderFooter}
                 errorLogin={errorLogin}
                 setErrorLogin={setErrorLogin}
+              />
+            </Route>
+            <Route path="*">
+              <PageNotFound
+                onClose={HandleClockToBack}
+                setIsRenderHeader={setIsRenderHeader}
+                setIsRenderFooter={setIsRenderFooter}
               />
             </Route>
           </Switch>

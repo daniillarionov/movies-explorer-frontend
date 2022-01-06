@@ -30,7 +30,7 @@ function PageWithLogin({
             title="E-mail"
             type="email"
             name="email"
-            onChange={onEmailChange}
+            onChange={onEmailChange}            
           />
           <Input
             setIsValid={setIsValid}

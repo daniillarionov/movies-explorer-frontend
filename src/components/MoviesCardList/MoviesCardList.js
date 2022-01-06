@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList({
@@ -10,15 +9,14 @@ function MoviesCardList({
   onDeleteMovie,
   loadCardList,
   addCardLoading,
-  setSourceValue,
+  savedMovies,
 }) {
-  const savedMoviesLocal = JSON.parse(localStorage.getItem("savedmoviesLocal"));
   const endLoading = filterMovies.length <= loadCardList;
   return (
     <div className="movies-card-list">
       <section className="movies-card-list__section">
         {filterMovies.slice(0, loadCardList).map((item) => {
-          savedMoviesLocal.map((card) => {
+          savedMovies.map((card) => {
             if (card.nameRU === item.nameRU) {
               return (item._id = card._id);
             }
@@ -31,6 +29,7 @@ function MoviesCardList({
               likeButton={likeButton}
               onCardLike={onCardLike}
               onDeleteMovie={onDeleteMovie}
+              savedMovies={savedMovies}
               link={
                 savedMoviesPage
                   ? item.image

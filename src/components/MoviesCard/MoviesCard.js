@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function MoviesCard({
@@ -9,13 +8,12 @@ function MoviesCard({
   movie,
   duration,
   onDeleteMovie,
+  savedMovies,
 }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const savedMoviesLocal = JSON.parse(localStorage.getItem("savedmoviesLocal"));
-  const isLiked = savedMoviesLocal.some((item) => {
+  const isLiked = savedMovies.some((item) => {
     return item._id === movie._id;
   });
-  const [isLikedCard, seIsLikedCard] = useState(isLiked);
   const isOwn = movie.owner === currentUser._id;
   function convertDuration(duration) {
     let hours = Math.trunc(duration / 60);
@@ -40,11 +38,9 @@ function MoviesCard({
       nameRU: movie.nameRU || "отсутствует",
       nameEN: movie.nameEN || "отсутствует",
     });
-    seIsLikedCard(true);
   }
   function handleDeleteClick() {
     onDeleteMovie(movie._id);
-    seIsLikedCard(false);
   }
   return (
     <article className="movies-card">
@@ -56,11 +52,11 @@ function MoviesCard({
           <h2 className="movies-card__title">{movie.nameRU}</h2>
           {likeButton ? (
             <button
-              onClick={isLikedCard ? handleDeleteClick : handleLikeClick}
+              onClick={isLiked ? handleDeleteClick : handleLikeClick}
               type="button"
               aria-label="Нравится"
               className={`movies-card__like ${
-                isLikedCard ? "movies-card__like_active" : "movies-card__like"
+                isLiked ? "movies-card__like_active" : "movies-card__like"
               }`}
             />
           ) : (

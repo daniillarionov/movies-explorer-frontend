@@ -6,6 +6,8 @@
   line-height: 17px;
   color: #4285f4;
   margin: 184px 0 0;
+  transition: opacity 1s ease;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 767px) {

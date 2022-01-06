@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useEffect } from "react";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Prelosder from "../Preloader/Preloader";
@@ -13,7 +13,6 @@ function Movies({
   addCardLoading,
   setIsRenderHeader,
   setIsRenderFooter,
-  setMovies,
   handleSouceValueChange,
   sourceValue,
   setCheckboxState,
@@ -22,33 +21,58 @@ function Movies({
   handleDeleteMovie,
   handleFilterMovies,
   checkboxState,
-  setNotFoundText
+  setNotFoundText,
+  setFilterMovies,
+  savedMovies,
+  setSavedMovie,
+  setSavedMoviesPage,
+  savedMoviesPage,
 }) {
+  const localCheckBoxState = JSON.parse(localStorage.getItem("checkboxState"));
+  const localSourceValue = localStorage.getItem("sourceValue");
+  const localMovies = JSON.parse(localStorage.getItem("moviesLocal"));
   useEffect(() => {
-    const localCheckBoxState = localStorage.getItem("checkboxState");
-    const localSourceValue = localStorage.getItem("sourceValue");
-    setCheckboxState(localCheckBoxState);
-    setSourceValue(localSourceValue);
+    const localSavedMovies = JSON.parse(
+      localStorage.getItem("savedMoviesLocal")
+    );
+    setSavedMovie(localSavedMovies)
+    setSavedMoviesPage(false);
     setIsRenderHeader(false);
     setIsRenderFooter(false);
-    handleFilterMovies(
-      filterMovies,
-      localCheckBoxState,
-      localSourceValue,
-      setMovies
+    setCheckboxState(localCheckBoxState);
+    setSourceValue(localSourceValue);
+    const localSourceMoviesResult = JSON.parse(
+      localStorage.getItem("sourceMoviesResult")
     );
+    localMovies === null
+      ? onSourceMovies()
+      : setFilterMovies(localSourceMoviesResult);
   }, []);
-  const notFoundMovies = filterMovies.length === 0;
+  useEffect(() => {
+    const localSource = localStorage.getItem("source");
+    if (localSource) {
+      handleFilterMovies(
+        localMovies,
+        checkboxState,
+        localSourceValue,
+        setFilterMovies
+      );
+    }
+  }, [checkboxState]);
+  const notFoundMovies = filterMovies === null || filterMovies.length === 0;
   return (
     <>
       <SearchForm
-        onSourceMovies={onSourceMovies}
         onSourceValue={handleSouceValueChange}
         onCheckboxClick={setCheckboxState}
         sourceValue={sourceValue}
         checkboxState={checkboxState}
         filterMovies={filterMovies}
         setNotFoundText={setNotFoundText}
+        handleFilterMovies={handleFilterMovies}
+        movies={localMovies}
+        setFilterMovies={setFilterMovies}
+        savedMoviesPage={savedMoviesPage}
       />
       {isLoading ? (
         <Prelosder />
@@ -61,8 +85,8 @@ function Movies({
           likeButton={true}
           loadCardList={loadCardList}
           addCardLoading={addCardLoading}
-          setSourceValue={setSourceValue}
           onDeleteMovie={handleDeleteMovie}
+          savedMovies={savedMovies}
         />
       )}
     </>

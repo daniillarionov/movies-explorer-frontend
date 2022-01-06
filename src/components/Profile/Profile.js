@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import validator from 'validator'
 
 function Profile({
   handleButtonQuitClick,
@@ -10,6 +11,7 @@ function Profile({
   useEffect(() => {
     setIsRenderFooter(true);
   }, []);
+  
 
   const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = useState("");
@@ -27,9 +29,15 @@ function Profile({
     setIsValid(e.target.closest(".profile__form").checkValidity());
   }
   function handleChangeEmail(e) {
+    const email = e.target.value
+    if (!validator.isEmail(email)) {
+      setErrorEmail("Введите корректный адрес электронной почты");
+      setIsValid(false)
+    } else {
+      setErrorEmail("")
+      setIsValid(true)
+    }
     setEmail(e.target.value);
-    setErrorEmail(e.target.validationMessage);
-    setIsValid(e.target.closest(".profile__form").checkValidity());
   }
   function handleSubmit(e) {
     e.preventDefault();
