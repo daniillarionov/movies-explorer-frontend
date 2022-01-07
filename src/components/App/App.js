@@ -16,6 +16,7 @@ import Error from "../Error/Error";
 import PopupSideMenu from "../PopupSideMenu/PopupSideMenu";
 import PopupMovieDelete from "../PopupMovieDelete/PopupMovieDelete";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import ProtectedRouteForSignin from "../ProtectedRouteForSignin/ProtectedRouteForSignin";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import PageNotFound from "../PageNotFound/PageNotFound";
 
@@ -219,29 +220,16 @@ function App() {
   function handleLikeClick(data) {
     api
       .addMovie(data)
-      .then(() => {
-        api
-          .getMovies()
-          .then((data) => {
-            const savedMovies = data.filter((item) => {
-              if (item.owner === currentUser._id) {
-                return item;
-              }
-            });
-            localStorage.setItem(
-              "savedMoviesLocal",
-              JSON.stringify(savedMovies)
-            );
-            setSavedMovie(savedMovies);
-            setLoadSavedMovie(savedMovies);
-          })
-          .catch((err) => {
-            setisPopupErrorOpen(true);
-            setError(err);
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
+      .then((data) => {
+        const newSavedMovies = [
+          ...JSON.parse(localStorage.getItem("savedMoviesLocal")),
+          data,
+        ];
+        setSavedMovie(newSavedMovies);
+        localStorage.setItem(
+          "savedMoviesLocal",
+          JSON.stringify(newSavedMovies)
+        );
       })
       .catch((err) => {
         setisPopupErrorOpen(true);
@@ -267,16 +255,16 @@ function App() {
     history.push("/");
     setIsRenderHeader(false);
   }
-  async function handleRegister({ name, email, password }) {
-    await apiAuth
+  function handleRegister({ name, email, password }) {
+    apiAuth
       .register({ name, email, password })
       .then(() => {
+        handleLogin({ email, password });
         history.push("/movies");
       })
       .catch(() => {
         setErrorLogin("При регистрации произошла ошибка");
       });
-    handleLogin({ email, password });
   }
   function handleLogin({ email, password }) {
     apiAuth
@@ -288,7 +276,7 @@ function App() {
         localStorage.setItem("loggedIn", true);
         loadUserInfo();
         handleLoadMovies();
-        handleLoadSavedMovies()
+        handleLoadSavedMovies();
       })
       .catch(() => {
         setErrorLogin("При авторизации произошла ошибка");
@@ -305,7 +293,7 @@ function App() {
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("savedMoviesLocal");
     localStorage.removeItem("source");
-    setSourceValue("")
+    setSourceValue("");
     setLoggedIn(false);
   }
   function handleSouceValueChange(data) {
@@ -314,36 +302,31 @@ function App() {
   function handleSouceSavedValueChange(data) {
     setSavedSourceValue(data);
   }
+
+  console.log(savedMovies);
   function handleDeleteMovie(movieId) {
     setIsOpenDeletePopup(true);
     api
       .deleteMovie(movieId)
-      .then(() => {
-        api
-          .getMovies()
-          .then((data) => {
-            const newSavedMovies = data.filter((item) => {
-              if (item.owner === currentUser._id) {
-                return item;
-              }
-            });
-            localStorage.setItem(
-              "savedMoviesLocal",
-              JSON.stringify(newSavedMovies)
-            );
-            setSavedMovie(newSavedMovies);
-          })
-          .catch((err) => {
-            setisPopupErrorOpen(true);
-            setError(err);
-          })
-          .finally(() => {
-            setIsOpenDeletePopup(false);
-          });
+      .then((data) => {
+        const SavedMovies = JSON.parse(
+          localStorage.getItem("savedMoviesLocal")
+        );
+        const result = SavedMovies.findIndex((item) => {
+          if (item._id === data._id) {
+            return item;
+          }
+        });
+        SavedMovies.splice(result, 1);
+        setSavedMovie(SavedMovies);
+        localStorage.setItem("savedMoviesLocal", JSON.stringify(SavedMovies));
       })
       .catch((err) => {
         setisPopupErrorOpen(true);
         setError(err);
+      })
+      .finally(() => {
+        setIsOpenDeletePopup(false);
       });
   }
   function HandleClockToBack() {
@@ -434,34 +417,34 @@ function App() {
               setIsRenderFooter={setIsRenderFooter}
             />
 
-            <Route path="/signin">
-              <Login
-                onLogin={handleLogin}
-                onEmailChange={handleEmailChange}
-                onPasswordChange={handlePasswordChange}
-                email={email}
-                password={password}
-                handleLogoClick={handleLogoClick}
-                setIsRenderHeader={setIsRenderHeader}
-                setIsRenderFooter={setIsRenderFooter}
-                errorLogin={errorLogin}
-              />
-            </Route>
+            <ProtectedRouteForSignin
+              path="/signin"
+              component={Login}
+              onLogin={handleLogin}
+              onEmailChange={handleEmailChange}
+              onPasswordChange={handlePasswordChange}
+              email={email}
+              password={password}
+              handleLogoClick={handleLogoClick}
+              setIsRenderHeader={setIsRenderHeader}
+              setIsRenderFooter={setIsRenderFooter}
+              errorLogin={errorLogin}
+            />
 
-            <Route path="/signup">
-              <Register
-                onRegister={handleRegister}
-                onEmailChange={handleEmailChange}
-                onPasswordChange={handlePasswordChange}
-                email={email}
-                password={password}
-                handleLogoClick={handleLogoClick}
-                setIsRenderHeader={setIsRenderHeader}
-                setIsRenderFooter={setIsRenderFooter}
-                errorLogin={errorLogin}
-                setErrorLogin={setErrorLogin}
-              />
-            </Route>
+            <ProtectedRouteForSignin
+              path="/signup"
+              component={Register}
+              onRegister={handleRegister}
+              onEmailChange={handleEmailChange}
+              onPasswordChange={handlePasswordChange}
+              email={email}
+              password={password}
+              handleLogoClick={handleLogoClick}
+              setIsRenderHeader={setIsRenderHeader}
+              setIsRenderFooter={setIsRenderFooter}
+              errorLogin={errorLogin}
+              setErrorLogin={setErrorLogin}
+            />
             <Route path="*">
               <PageNotFound
                 onClose={HandleClockToBack}
