@@ -1,0 +1,27 @@
+.page-with-login__submit {
+    background: #4285F4;
+border-radius: 3px;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+color: #FFFFFF;
+width: 396px;
+height: 45px;
+border: none;
+position: absolute;
+bottom: 0;
+transition: opacity 1s ease;
+    cursor: pointer;
+}
+.page-with-login__submit:disabled {
+    background: #8B8B8B;
+    cursor: none;
+}
+
+@media screen and (max-width: 767px) {
+    .page-with-login__submit {
+        width: 260px;
+        font-size: 12px;
+line-height: 15px;
+    }
+  }

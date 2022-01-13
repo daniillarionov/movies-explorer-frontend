@@ -1,0 +1,25 @@
+.about-me__photo {
+  height: 327px;
+  width: 270px;
+  background-size: cover;
+  background-image: url("../../../images/photo.jpg");
+  background-position: center;
+  border-radius: 10px;
+  margin-left: 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .about-me__photo {
+    min-height: 307px;
+    min-width: 255px;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .about-me__photo {
+    min-height: 352px;
+    min-width: 292px;
+    margin-left: 0;
+  }
+}

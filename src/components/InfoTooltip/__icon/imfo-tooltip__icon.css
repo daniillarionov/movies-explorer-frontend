@@ -1,0 +1,7 @@
+.imfo-tooltip__icon {
+    background-image: url("../../../images/icon_ok.svg");
+    background-size: auto;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+}

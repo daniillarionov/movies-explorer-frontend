@@ -1,0 +1,20 @@
+.movies-card__delete {
+    width: 16px;
+    height: 16px;
+    background-color: #222222;
+    background-image: url("../../../images/delete-icon.svg");
+    background-size: cover;
+    transition: opacity 1s ease;
+    cursor: pointer;
+    padding: 0;
+    margin: 14px 0 0;
+    border: none;
+  }
+  
+  .movies-card__delete:hover {
+    opacity: .5;
+  }
+
+  .movies-card__delete_hidden {
+    display: none;
+  }

@@ -1,0 +1,14 @@
+.footer__description {
+  font-size: 13px;
+  line-height: 16px;
+  color: #8b8b8b;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .footer__description {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

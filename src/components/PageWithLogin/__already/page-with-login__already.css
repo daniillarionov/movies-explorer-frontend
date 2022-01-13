@@ -1,0 +1,13 @@
+.page-with-login__already {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    width: 396px;
+}
+
+@media screen and (max-width: 767px) {
+    .page-with-login__already {
+        width: 260px;
+        margin-top: 14px;
+    }
+  }

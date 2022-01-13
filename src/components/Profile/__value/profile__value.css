@@ -1,0 +1,9 @@
+.profile__value {
+    font-weight: normal;
+font-size: 11px;
+line-height: 13px;
+background-color: #202020;
+border: none;
+color: #fff;
+text-align: right;
+}

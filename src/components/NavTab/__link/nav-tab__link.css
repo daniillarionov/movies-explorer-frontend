@@ -1,0 +1,25 @@
+.nav-tab__link {
+    width: 96px;
+    height: 36px;
+    font-weight: 500;
+font-size: 12px;
+line-height: 36px;
+background: #303030;
+border-radius: 10px;
+margin-right: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #FFF;
+text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+    .nav-tab__link {
+        width: 82px;
+        height: 26px;
+        font-size: 10px;
+line-height: 16px;
+margin-right: 6px;
+    }
+  }

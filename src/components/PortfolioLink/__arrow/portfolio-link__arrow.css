@@ -1,0 +1,23 @@
+.portfolio-link__arrow {
+    width: 29px;
+    height: 60px;
+    background-image: url("../../../images/arrow.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: center;
+}
+
+@media screen and (max-width: 1279px) {
+    .portfolio-link__arrow {
+        width: 27px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .portfolio-link__arrow {
+        width: 18px;
+    height: 28px;
+    background-image: url("../../../images/arrow_small.svg");
+    background-size: auto;
+    }
+  }

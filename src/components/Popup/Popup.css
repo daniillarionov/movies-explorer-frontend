@@ -1,0 +1,23 @@
+.popup {
+    position: fixed;
+    visibility: hidden;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 4;
+    transition: visibility .6s ease-in, opacity .6s;
+  }
+    
+  .popup_opened {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 520px) {
+    .popup {
+        left: 0;
+        width: 100%;
+    }
+  }

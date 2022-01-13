@@ -1,0 +1,20 @@
+.error__status {
+  font-weight: normal;
+  font-size: 140px;
+  line-height: 169px;
+  margin: 246px auto 0;
+}
+
+@media screen and (max-width: 1279px) {
+  .error__status {
+    margin-top: 408px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .error__status {
+    font-size: 80px;
+    line-height: 97px;
+    margin-top: 329px;
+  }
+}

@@ -1,0 +1,27 @@
+.promo__text {
+font-size: 50px;
+line-height: 58px;
+text-align: center;
+letter-spacing: -0.04em;
+color: #FFFFFF;
+max-width: 730px;
+margin: 160px 0 0;
+}
+
+@media screen and (max-width: 1279px) {
+    .promo__text {
+        font-size: 40px;
+        line-height: 52px;
+        max-width: 680px;
+        margin-top: 350px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .promo__text {
+        margin: 220px 0 212px;
+        font-size: 29px;
+line-height: 37px;
+        
+    }
+  }
